@@ -1826,6 +1826,7 @@ def write_ply(image,
               depth_edge_model,
               depth_edge_model_init,
               depth_feat_model):
+    print("writing")
     depth = depth.astype(np.float64)
     input_mesh, xy2depth, image, depth = create_mesh(depth, image, int_mtx, config)
 
@@ -2167,6 +2168,7 @@ class Canvas_view():
 def output_3d_photo(verts, colors, faces, Height, Width, hFov, vFov, tgt_poses, video_traj_types, ref_pose,
                     output_dir, ref_image, int_mtx, config, image, videos_poses, video_basename, original_H=None, original_W=None,
                     border=None, depth=None, normal_canvas=None, all_canvas=None, mean_loc_depth=None):
+    print("video_traj_types", video_traj_types)
 
     cam_mesh = netx.Graph()
     cam_mesh.graph['H'] = Height
@@ -2241,6 +2243,9 @@ def output_3d_photo(verts, colors, faces, Height, Width, hFov, vFov, tgt_poses, 
             new_mean_loc_depth = mean_loc_depth - float(rel_pose[2, 3])
             if 'dolly' in video_traj_type:
                 new_fov = float((np.arctan2(plane_width, np.array([np.abs(new_mean_loc_depth)])) * 180. / np.pi) * 2)
+                print("fov", new_fov)
+                # new_fov = (new_fov - 38) * 2 + 38
+                print("new_fov", new_fov)
                 normal_canvas.reinit_camera(new_fov)
             else:
                 normal_canvas.reinit_camera(fov)
